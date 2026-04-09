@@ -1,5 +1,6 @@
 ﻿using AppRpgEtec.Models;
 using AppRpgEtec.Services.Usuarios;
+using AppRpgEtec.Views.Personagens;
 using AppRpgEtec.Views.Usuarios;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
                     Preferences.Set("UsuarioPerfil", uAutenticado.Perfil);
                     Preferences.Set("UsuarioToken", uAutenticado.Token);
                     await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok");
-                    Application.Current.MainPage = new MainPage();
+                    Application.Current.MainPage = new ListagemView();
                 }
                 else
                 {
@@ -90,12 +91,15 @@ namespace AppRpgEtec.ViewModels.Usuarios
         {
             try
             {
+                if (string.IsNullOrEmpty(Login) && string.IsNullOrEmpty(Senha))
+                {
+                    throw new Exception("Digite usuario e senha");
+                }
                 Usuario u = new Usuario();
                 u.Username = Login;
                 u.PasswordString = Senha;
-
                 Usuario uRegistrado = await uService.PostRegistrarUsuarioAsync(u);
-
+                
                 if (uRegistrado.Id != 0)
                 {
                     string mensagem = $"Usuário Id {uRegistrado.Id} registrado com sucesso";
