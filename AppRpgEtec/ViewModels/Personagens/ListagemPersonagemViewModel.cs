@@ -1,15 +1,19 @@
 ﻿using AppRpgEtec.Models;
 using AppRpgEtec.Services.Personagens;
+using AppRpgEtec.Views.Armas;
+using AppRpgEtec.Views.Personagens;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
 
 namespace AppRpgEtec.ViewModels.Personagens
 {
     public class ListagemPersonagemViewModel : BaseViewModel
     {
         private PersonagemService pService;
+        public ICommand DirecionarArmasCommand { get; set; }
         public ObservableCollection<Personagem> Personagens { get; set; }
 
         public ListagemPersonagemViewModel()
@@ -19,6 +23,12 @@ namespace AppRpgEtec.ViewModels.Personagens
             Personagens = new ObservableCollection<Personagem>();
 
             _ = ObterPersonagens();
+            InicializarCommands();
+        }
+
+        public void InicializarCommands()
+        {
+            DirecionarArmasCommand = new Command(async () => await DirecionarParaArmas());
         }
 
         public async Task ObterPersonagens()
@@ -34,6 +44,10 @@ namespace AppRpgEtec.ViewModels.Personagens
                 await Application.Current.MainPage
                     .DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "ok");
             }
+        }
+        public async Task DirecionarParaArmas()//Método para exibição da view de armas
+        {
+            Application.Current.MainPage = new ListagemArmasView();
         }
     }
 }
