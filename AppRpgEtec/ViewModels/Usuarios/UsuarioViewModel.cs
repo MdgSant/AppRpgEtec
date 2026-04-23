@@ -1,5 +1,6 @@
 ﻿using AppRpgEtec.Models;
 using AppRpgEtec.Services.Usuarios;
+using AppRpgEtec.Views.Armas;
 using AppRpgEtec.Views.Personagens;
 using AppRpgEtec.Views.Usuarios;
 using System;
@@ -73,7 +74,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
                     Preferences.Set("UsuarioPerfil", uAutenticado.Perfil);
                     Preferences.Set("UsuarioToken", uAutenticado.Token);
                     await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok");
-                    Application.Current.MainPage = new ListagemView();
+                    Application.Current.MainPage = new AppShell();
                 }
                 else
                 {

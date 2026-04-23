@@ -15,6 +15,7 @@ namespace AppRpgEtec.ViewModels.Personagens
         private PersonagemService pService;
         public ICommand DirecionarArmasCommand { get; set; }
         public ObservableCollection<Personagem> Personagens { get; set; }
+        public ICommand NovoPersonagemCommand { get; }
 
         public ListagemPersonagemViewModel()
         {
@@ -24,6 +25,8 @@ namespace AppRpgEtec.ViewModels.Personagens
 
             _ = ObterPersonagens();
             InicializarCommands();
+
+            NovoPersonagemCommand = new Command(async () => { await ExibirCadastroPersonagem(); });
         }
 
         public void InicializarCommands()
@@ -48,6 +51,18 @@ namespace AppRpgEtec.ViewModels.Personagens
         public async Task DirecionarParaArmas()//Método para exibição da view de armas
         {
             Application.Current.MainPage = new ListagemArmasView();
+        }
+
+        public async Task ExibirCadastroPersonagem()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync("cadPersonagemView");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "Ok");
+            }
         }
     }
 }
